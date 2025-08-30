@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -52,7 +52,7 @@ const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password }) => {
 };
 
 export const AuthDialog: React.FC = () => {
-  const { showAuthDialog, login, signup, isAuthenticated } = useAuth();
+  const { showAuthDialog, login, signup, isAuthenticated, closeAuthDialog } = useAuth();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -105,8 +105,18 @@ export const AuthDialog: React.FC = () => {
   return (
     <Dialog open={showAuthDialog} modal>
         <DialogContent 
-          className="sm:max-w-md border-border bg-card backdrop-blur-xl [&>button]:hidden"
+          className="sm:max-w-md border-border bg-card backdrop-blur-xl [&>button]:hidden relative fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
         >
+        {/* Red Cancel Button - Override hidden with !block */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="!block absolute right-3 top-3 rounded-full bg-red-500/20 hover:bg-red-500/30 text-red-500 hover:text-red-400 transition-all duration-200 z-10"
+          onClick={closeAuthDialog}
+        >
+          ❌
+          <span className="sr-only">Close</span>
+        </Button>
         <div className="space-y-6">
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">

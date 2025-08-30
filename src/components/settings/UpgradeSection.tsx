@@ -136,7 +136,7 @@ const UpgradeSection = () => {
                 </h4>
                 
                 <div className="space-y-3">
-                  <div className="grid grid-cols-3 gap-4 pb-2 border-b border-scraper-border">
+                  <div className="grid gap-4 pb-2 border-b border-scraper-border grid-cols-[1fr_200px_200px] md:grid-cols-[1fr_240px_240px]">
                     <div className="text-scraper-text-secondary font-medium">Feature</div>
                     <div className="text-center">
                       <Badge variant="outline" className="border-scraper-border text-scraper-text-secondary">
@@ -151,7 +151,7 @@ const UpgradeSection = () => {
                   </div>
                   
                   {category.items.map((item) => (
-                    <div key={item.name} className="grid grid-cols-3 gap-4 py-2">
+                    <div key={item.name} className="grid gap-4 py-2 items-center grid-cols-[1fr_200px_200px] md:grid-cols-[1fr_240px_240px]">
                       <div className="text-scraper-text-primary">{item.name}</div>
                       <div className="text-center">
                         {renderFeatureValue(item.free)}

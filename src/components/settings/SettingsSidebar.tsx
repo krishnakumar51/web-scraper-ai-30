@@ -1,6 +1,6 @@
 import { Settings, Shield, User, Crown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SettingsSection } from '@/pages/Settings';
+import type { SettingsSection } from '@/pages/Settings';
 
 interface SettingsSidebarProps {
   activeSection: SettingsSection;

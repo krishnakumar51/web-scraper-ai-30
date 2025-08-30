@@ -12,7 +12,7 @@ const Index = () => {
   return (
     <div className="relative">
       <ChatInterface onSourcesUpdate={() => {}} onChatStart={handleChatStart} />
-      <UpgradeBanner isChatActive={isChatActive} />
+      <UpgradeBanner isChatActive={isChatActive} isVisible={true} />
     </div>
   );
 };

@@ -19,13 +19,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
+// Export useAuth hook
+function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}
+
+export { useAuth };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -36,7 +39,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedUser = localStorage.getItem('webscraper-ai-user');
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
       } catch (error) {
         console.error('Failed to parse stored user:', error);
         localStorage.removeItem('webscraper-ai-user');
@@ -48,18 +52,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Mock validation
-    if (email && password.length >= 8) {
+    // Hardcoded credentials check
+    if (email === 'krishna@gmail.com' && password === '123123') {
       const newUser: User = {
-        id: `user_${Date.now()}`,
-        email,
-        fullName: 'John Doe' // In real app, this would come from the API
+        id: 'user_krishna',
+        email: 'krishna@gmail.com',
+        fullName: 'Krishna'
       };
       setUser(newUser);
       localStorage.setItem('webscraper-ai-user', JSON.stringify(newUser));
       setShowAuthDialog(false);
     } else {
-      throw new Error('Invalid credentials');
+      throw new Error('Invalid credentials. Use krishna@gmail.com with password 123123');
     }
   };
 
@@ -94,10 +98,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const closeAuthDialog = () => {
-    // Can't close dialog until authenticated
-    if (user) {
-      setShowAuthDialog(false);
-    }
+    // Allow closing dialog even if not authenticated
+    setShowAuthDialog(false);
   };
 
   return (

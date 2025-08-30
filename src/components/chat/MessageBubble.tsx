@@ -26,7 +26,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
   };
 
   return (
-    <div className={`flex gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 group transition-all duration-300 hover:bg-scraper-bg-card/10 rounded-xl hover-lift ${
+    <div className={`flex gap-2 sm:gap-3 px-2 sm:px-4 py-2 sm:py-3 group transition-all duration-300 hover:bg-scraper-bg-card/10 rounded-lg hover-lift ${
       isUser 
         ? 'bg-transparent justify-end' 
         : 'bg-transparent justify-start'
@@ -35,7 +35,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
         // User message layout (right-aligned)
         <>
           {/* Content */}
-          <div className="max-w-xs sm:max-w-xl lg:max-w-2xl space-y-1 sm:space-y-2">
+          <div className="max-w-xs sm:max-w-xl lg:max-w-2xl space-y-1">
             <div className="flex items-center justify-end gap-2">
               {/* Timestamp */}
               <div className="group-hover-visible">
@@ -56,10 +56,10 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
             </div>
 
             {/* Message Content */}
-            <div className="bg-scraper-gradient-primary rounded-2xl rounded-tr-md px-4 sm:px-5 py-3 sm:py-4 shadow-lg border border-scraper-border/20 hover-glow">
-              <div className="text-scraper-text-primary leading-relaxed text-base sm:text-[16px]">
+            <div className="bg-scraper-gradient-primary rounded-xl rounded-tr-md px-3 sm:px-4 py-2 sm:py-3 shadow-md border border-scraper-border/20 hover-glow">
+              <div className="text-scraper-text-primary leading-relaxed text-sm sm:text-base">
                 {message.content.split('\n').map((line, index) => (
-                  <p key={index} className="mb-2 sm:mb-3 last:mb-0 font-medium">
+                  <p key={index} className="mb-1 sm:mb-2 last:mb-0 font-medium">
                     {line}
                   </p>
                 ))}
@@ -85,7 +85,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 space-y-2 sm:space-y-3 max-w-4xl">
+          <div className="flex-1 space-y-1 sm:space-y-2 max-w-4xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="text-xs text-scraper-text-muted font-medium">WebScraper AI</div>
@@ -115,7 +115,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
             </div>
 
             {/* Message Content (Markdown) */}
-            <div className="text-scraper-text-primary leading-relaxed text-base sm:text-[16px] prose prose-invert max-w-none">
+            <div className="text-scraper-text-primary leading-relaxed text-sm sm:text-base prose prose-invert max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{

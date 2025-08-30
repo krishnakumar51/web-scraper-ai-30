@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/comp
 import { Link, useLocation } from 'react-router-dom';
 import { useChatStorage } from '@/hooks/useChatStorage';
 import { ChatSession } from '@/types/chat';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ChatSidebarProps {
   isChatPanelOpen: boolean;
@@ -17,6 +18,7 @@ const ChatSidebar = ({ isChatPanelOpen, onChatToggle }: ChatSidebarProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const location = useLocation();
   const { chatState, createSession, setCurrentSession, deleteSession } = useChatStorage();
+  const { isAuthenticated, triggerAuth } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -131,13 +133,28 @@ const ChatSidebar = ({ isChatPanelOpen, onChatToggle }: ChatSidebarProps) => {
           {/* Settings */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-12 h-12 p-0 rounded-xl text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card transition-all duration-200 hover:scale-105"
-              >
-                <Settings className="w-6 h-6" />
-              </Button>
+              {isAuthenticated ? (
+                <Link
+                  to="/settings"
+                  className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 hover:scale-105 ${
+                    isActive('/settings')
+                      ? 'bg-scraper-accent-primary text-scraper-text-primary shadow-scraper-glow'
+                      : 'text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card'
+                  }`}
+                  onClick={() => isChatPanelOpen && onChatToggle()}
+                >
+                  <Settings className="w-6 h-6" />
+                </Link>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={triggerAuth}
+                  className="w-12 h-12 p-0 rounded-xl text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card transition-all duration-200 hover:scale-105"
+                >
+                  <Settings className="w-6 h-6" />
+                </Button>
+              )}
             </TooltipTrigger>
             <TooltipContent side="right" className="bg-scraper-bg-card border-scraper-border text-scraper-text-primary">
               <p>Settings</p>
@@ -149,13 +166,28 @@ const ChatSidebar = ({ isChatPanelOpen, onChatToggle }: ChatSidebarProps) => {
         <div className="absolute bottom-4 left-3 right-3">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-12 h-12 p-0 rounded-xl text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card transition-all duration-200 hover:scale-105"
-              >
-                <User className="w-6 h-6" />
-              </Button>
+              {isAuthenticated ? (
+                <Link
+                  to="/user"
+                  className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 hover:scale-105 ${
+                    isActive('/user')
+                      ? 'bg-scraper-accent-primary text-scraper-text-primary shadow-scraper-glow'
+                      : 'text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card'
+                  }`}
+                  onClick={() => isChatPanelOpen && onChatToggle()}
+                >
+                  <User className="w-6 h-6" />
+                </Link>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={triggerAuth}
+                  className="w-12 h-12 p-0 rounded-xl text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card transition-all duration-200 hover:scale-105"
+                >
+                  <User className="w-6 h-6" />
+                </Button>
+              )}
             </TooltipTrigger>
             <TooltipContent side="right" className="bg-scraper-bg-card border-scraper-border text-scraper-text-primary">
               <p>User Profile</p>

@@ -1,4 +1,4 @@
-import { Brain, BarChart3, Settings, LayoutDashboard } from 'lucide-react';
+import { Brain, BarChart3, Settings, LayoutDashboard, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +12,9 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, triggerAuth, user } = useAuth();
+
+
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -60,35 +62,74 @@ const Header = () => {
             <span className="hidden md:inline">Metrics</span>
           </Link>
 
-          {/* User Menu or Settings */}
+          {/* Navigation Links - Show when authenticated */}
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/settings"
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all ${
+                  isActive('/settings')
+                    ? 'bg-scraper-accent-primary text-scraper-text-primary shadow-scraper-glow'
+                    : 'text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card'
+                }`}
+              >
+                <Settings className="w-4 h-4" />
+                <span className="hidden md:inline">Settings</span>
+              </Link>
+
+              <Link
+                to="/user"
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all ${
+                  isActive('/user')
+                    ? 'bg-scraper-accent-primary text-scraper-text-primary shadow-scraper-glow'
+                    : 'text-scraper-text-secondary hover:text-scraper-text-primary hover:bg-scraper-bg-card'
+                }`}
+              >
+                <User className="w-4 h-4" />
+                <span className="hidden md:inline">User</span>
+              </Link>
+            </>
+          )}
+
+          {/* User Menu or Login Button */}
           {isAuthenticated ? (
             <UserMenu />
           ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
+            <div className="flex items-center space-x-3">
+              <Button
+                  onClick={triggerAuth}
+                  variant="outline"
                   size="sm"
-                  className="h-9 w-9 rounded-full bg-scraper-gradient-primary hover:opacity-80"
+                  className="border-scraper-border text-scraper-text-primary hover:bg-scraper-bg-card-hover"
                 >
-                  <Settings className="w-4 h-4 text-scraper-text-primary" />
+                  Login
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="w-56 bg-scraper-bg-card border-scraper-border shadow-scraper-md"
-              >
-                <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
-                  Export Chat History
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
-                  Preferences
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
-                  API Settings
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-9 rounded-full bg-scraper-gradient-primary hover:opacity-80"
+                  >
+                    <Settings className="w-4 h-4 text-scraper-text-primary" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-56 bg-scraper-bg-card border-scraper-border shadow-scraper-md"
+                >
+                  <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
+                    Export Chat History
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
+                    Preferences
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-scraper-text-primary hover:bg-scraper-bg-card-hover">
+                    API Settings
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           )}
         </nav>
       </div>

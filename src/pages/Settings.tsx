@@ -14,17 +14,28 @@ const Settings = () => {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState<SettingsSection>('general');
 
+  // Centralized section change handler that also syncs URL
+  const handleSectionChange = (section: SettingsSection) => {
+    setActiveSection(section);
+    // Keep URL in sync for better UX (back/forward support and deep links)
+    const hash = section === 'profile' || section === 'upgrade' ? `#${section}` : '';
+    const newUrl = `/settings${hash}`;
+    // Use replaceState to avoid cluttering history when switching sections
+    window.history.replaceState({}, document.title, newUrl);
+  };
+
   // Handle navigation from other parts of the app (like UserMenu and upgrade banner)
   useEffect(() => {
     if (location.state?.section) {
-      setActiveSection(location.state.section as SettingsSection);
+      handleSectionChange(location.state.section as SettingsSection);
       // Clear the navigation state to prevent issues on refresh
-      window.history.replaceState({}, document.title);
+      window.history.replaceState({}, document.title, location.pathname + location.hash);
     } else if (location.hash === '#upgrade') {
-      setActiveSection('upgrade');
+      handleSectionChange('upgrade');
     } else if (location.hash === '#profile') {
-      setActiveSection('profile');
+      handleSectionChange('profile');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, location.hash]);
 
   if (!isAuthenticated) {
@@ -55,18 +66,18 @@ const Settings = () => {
           <p className="text-scraper-text-secondary">Manage your account and preferences</p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex gap-8 items-stretch">
           {/* Sidebar */}
-          <div className="w-64 flex-shrink-0">
+          <div className="w-72 flex-shrink-0 self-start h-[calc(100vh-10rem)]">
             <SettingsSidebar 
               activeSection={activeSection} 
-              onSectionChange={setActiveSection} 
+              onSectionChange={handleSectionChange} 
             />
           </div>
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div className="bg-scraper-bg-card rounded-xl border border-scraper-border shadow-scraper-md transition-all duration-200 hover:shadow-scraper-lg">
+            <div className="bg-scraper-bg-card rounded-xl border border-scraper-border shadow-scraper-md transition-all duration-200 hover:shadow-scraper-lg min-h-[calc(100vh-10rem)]">
               {renderActiveSection()}
             </div>
           </div>
