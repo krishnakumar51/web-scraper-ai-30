@@ -27,8 +27,8 @@ const UpgradeBanner = ({ onFirstRequest, isVisible = true, isChatActive = false 
   };
 
   const handleUpgrade = () => {
-    // Navigate to settings upgrade section
-    window.location.href = '/settings';
+    // Navigate to settings upgrade section with state
+    window.location.href = '/settings#upgrade';
   };
 
   // Hide banner if user has interacted, it was manually closed, or chat is active
@@ -39,24 +39,29 @@ const UpgradeBanner = ({ onFirstRequest, isVisible = true, isChatActive = false 
   return (
     <div
       className={cn(
-        "fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40",
+        "fixed bottom-20 z-40",
         "bg-scraper-gradient-primary rounded-lg border border-scraper-border",
         "shadow-scraper-lg backdrop-blur-sm",
-        "w-80 max-w-[calc(100vw-2rem)] sm:max-w-md"
+        "transform -translate-x-1/2",
+        "w-64 max-w-[calc(100vw-6rem)]",
+        "transition-all duration-300 ease-in-out"
       )}
+      style={{
+        left: 'calc(50% + var(--sidebar-width, 80px) / 2 - var(--sources-width, 0px) / 2)'
+      }}
     >
       {/* Close Button */}
       <button
         onClick={handleClose}
-        className="absolute top-2 right-2 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+        className="absolute top-1.5 right-1.5 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors z-10"
       >
         <X className="w-3 h-3 text-white" />
       </button>
 
       <div className="p-3 text-white relative overflow-hidden">
-        <div className="relative flex items-center gap-3">
-          <div className="p-1.5 bg-white/20 rounded-md">
-            <Crown className="w-3.5 h-3.5" />
+        <div className="relative flex items-center gap-2">
+          <div className="p-1 bg-white/20 rounded-md flex-shrink-0">
+            <Crown className="w-4 h-4" />
           </div>
           
           <div className="flex-1 min-w-0">
@@ -66,7 +71,7 @@ const UpgradeBanner = ({ onFirstRequest, isVisible = true, isChatActive = false 
           <Button
             onClick={handleUpgrade}
             size="sm"
-            className="bg-white text-scraper-accent-primary hover:bg-white/90 font-medium px-3 py-1.5 text-xs rounded-md"
+            className="bg-white text-scraper-accent-primary hover:bg-white/90 font-medium px-2 py-1 text-xs rounded-md flex-shrink-0"
           >
             Upgrade
           </Button>

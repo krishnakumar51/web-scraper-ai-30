@@ -95,9 +95,11 @@ const ChatInterface = ({ onSourcesUpdate, onChatStart }: ChatInterfaceProps) => 
       return;
     }
 
-    // Notify parent that chat has started
+    // Notify parent that chat has started and hide upgrade banner
     if (messages.length === 0) {
       onChatStart?.();
+      // Hide the upgrade banner when user makes first request
+      sessionStorage.setItem('user-first-request', 'true');
     }
 
     setMessages((prev) => [

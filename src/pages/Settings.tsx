@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import SettingsSidebar from '@/components/settings/SettingsSidebar';
 import GeneralSettings from '@/components/settings/GeneralSettings';
@@ -11,7 +11,17 @@ export type SettingsSection = 'general' | 'security' | 'profile' | 'upgrade';
 
 const Settings = () => {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
   const [activeSection, setActiveSection] = useState<SettingsSection>('general');
+
+  // Handle navigation from other parts of the app (like UserMenu and upgrade banner)
+  useEffect(() => {
+    if (location.state?.section) {
+      setActiveSection(location.state.section as SettingsSection);
+    } else if (location.hash === '#upgrade') {
+      setActiveSection('upgrade');
+    }
+  }, [location.state, location.hash]);
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
