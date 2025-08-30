@@ -86,9 +86,7 @@ const ChatInterface = ({ onSourcesUpdate, onChatStart }: ChatInterfaceProps) => 
     }
   };
 
-
-
-  const handleSendPrompt = async (message: string) => {
+  const handleSendPrompt = async (message: string, image?: File) => {
     // Block if not authenticated
     if (!isAuthenticated) {
       triggerAuth();
@@ -102,15 +100,20 @@ const ChatInterface = ({ onSourcesUpdate, onChatStart }: ChatInterfaceProps) => 
       sessionStorage.setItem('user-first-request', 'true');
     }
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(), // Generates a unique ID
-        content: message,
-        role: 'user',
-        timestamp: new Date().toISOString(),
-      }
-    ]);
+    const newMessage: Message = {
+      id: crypto.randomUUID(),
+      content: message,
+      role: 'user',
+      timestamp: new Date().toISOString(),
+    };
+
+    // If image is provided, add it to the message (this would be extended based on your Message type)
+    if (image) {
+      console.log('Image uploaded:', image.name);
+      // You might want to add image handling to your Message type
+    }
+
+    setMessages((prev) => [...prev, newMessage]);
 
     setIsTyping(true);
 

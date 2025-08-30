@@ -18,6 +18,8 @@ const Settings = () => {
   useEffect(() => {
     if (location.state?.section) {
       setActiveSection(location.state.section as SettingsSection);
+      // Clear the navigation state to prevent issues on refresh
+      window.history.replaceState({}, document.title);
     } else if (location.hash === '#upgrade') {
       setActiveSection('upgrade');
     }
@@ -62,7 +64,7 @@ const Settings = () => {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div className="bg-scraper-bg-card rounded-xl border border-scraper-border shadow-scraper-md">
+            <div className="bg-scraper-bg-card rounded-xl border border-scraper-border shadow-scraper-md transition-all duration-200 hover:shadow-scraper-lg">
               {renderActiveSection()}
             </div>
           </div>

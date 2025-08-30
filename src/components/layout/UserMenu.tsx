@@ -30,9 +30,9 @@ export const UserMenu: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-scraper-bg-card-hover transition-colors">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+            <AvatarFallback className="bg-scraper-accent-primary text-white text-xs font-medium">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -52,20 +52,20 @@ export const UserMenu: React.FC = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-scraper-border" />
-        <DropdownMenuItem className="cursor-pointer text-scraper-text-primary hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover" asChild>
-          <Link to="/settings">
+        <DropdownMenuItem className="cursor-pointer text-scraper-text-primary hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover transition-colors" asChild>
+          <Link to="/settings" state={{ section: 'general' }}>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer text-scraper-text-primary hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover" asChild>
+        <DropdownMenuItem className="cursor-pointer text-scraper-text-primary hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover transition-colors" asChild>
           <Link to="/settings" state={{ section: 'profile' }}>
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-scraper-border" />
-        <DropdownMenuItem className="cursor-pointer text-red-500 hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover" onClick={logout}>
+        <DropdownMenuItem className="cursor-pointer text-red-500 hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover transition-colors" onClick={logout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

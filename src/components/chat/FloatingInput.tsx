@@ -1,17 +1,20 @@
+
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useChatStorage } from '@/hooks/useChatStorage';
+import ImageUpload from './ImageUpload';
 
 interface FloatingInputProps {
-  onSendMessage?: (message: string) => void;
+  onSendMessage?: (message: string, image?: File) => void;
   disabled?: boolean;
   centered?: boolean;
 }
 
 const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: FloatingInputProps) => {
   const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isComposing, setIsComposing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { addMessage, getCurrentSession, createSession } = useChatStorage();
@@ -38,11 +41,10 @@ const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: Fl
       role: 'user',
     });
 
-    onSendMessage?.(message.trim());
+    onSendMessage?.(message.trim(), selectedImage || undefined);
     setMessage('');
+    setSelectedImage(null);
   };
-
-
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
@@ -51,30 +53,12 @@ const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: Fl
     }
   };
 
-  const handleFileUpload = () => {
-    // TODO: Implement file upload functionality
-    console.log('File upload clicked');
+  const handleImageSelect = (file: File) => {
+    setSelectedImage(file);
   };
 
-
-
-  const handlePromptSubmit = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    
-    if (!message.trim() || disabled) return;
-
-    const currentSession = getCurrentSession();
-    if (!currentSession) {
-      createSession();
-    }
-
-    addMessage({
-      content: message.trim(),
-      role: 'user',
-    });
-
-    onSendMessage?.(message.trim());
-    setMessage('');
+  const handleImageRemove = () => {
+    setSelectedImage(null);
   };
 
   if (centered) {
@@ -82,17 +66,13 @@ const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: Fl
       <div className="w-full">
         <div className="bg-scraper-bg-card/95 backdrop-blur-xl border border-scraper-border/40 rounded-full shadow-xl transition-all duration-300 hover:border-scraper-accent-primary/40 hover:bg-scraper-bg-card/100 hover:shadow-2xl">
           <form onSubmit={handleSubmit} className="flex items-center space-x-2 px-4 py-2">
-            {/* File Attachment Button */}
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={handleFileUpload}
-              className="h-8 w-8 p-0 text-scraper-text-muted hover:text-scraper-text-primary hover:bg-scraper-bg-hover/60 transition-all duration-200 rounded-full hover:scale-105"
-              disabled={disabled}
-            >
-              <Paperclip className="w-4 h-4" />
-            </Button>
+            {/* Image Upload Button */}
+            <ImageUpload
+              onImageSelect={handleImageSelect}
+              onImageRemove={handleImageRemove}
+              selectedImage={selectedImage}
+              isCompact={false}
+            />
 
             {/* Message Input */}
             <div className="flex-1 max-h-20 overflow-hidden">
@@ -130,18 +110,14 @@ const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: Fl
         {/* Input Container */}
         <div className="bg-scraper-bg-card/95 backdrop-blur-xl border border-scraper-border/40 rounded-full shadow-xl transition-all duration-300 hover:bg-scraper-bg-card/100 hover:border-scraper-accent-primary/40 hover:shadow-2xl">
           <form onSubmit={handleSubmit} className="flex items-center space-x-2 px-4 py-2">
-            {/* File Attachment Button */}
+            {/* Image Upload Button */}
             <div className="hidden sm:flex">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleFileUpload}
-                className="h-8 w-8 p-0 text-scraper-text-muted hover:text-scraper-text-primary hover:bg-scraper-bg-hover/60 transition-all duration-200 rounded-full hover:scale-105"
-                disabled={disabled}
-              >
-                <Paperclip className="w-4 h-4" />
-              </Button>
+              <ImageUpload
+                onImageSelect={handleImageSelect}
+                onImageRemove={handleImageRemove}
+                selectedImage={selectedImage}
+                isCompact={!!message.trim()}
+              />
             </div>
 
             {/* Message Input */}
@@ -149,7 +125,6 @@ const FloatingInput = ({ onSendMessage, disabled = false, centered = false }: Fl
               <Textarea
                 ref={textareaRef}
                 value={message}
-                
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onCompositionStart={() => setIsComposing(true)}
