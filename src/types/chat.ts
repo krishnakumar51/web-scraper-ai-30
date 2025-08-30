@@ -4,6 +4,7 @@ export interface Message {
   role: 'user' | 'assistant';
   timestamp: string;
   sources?: ScrapedSource[];
+  image?: File;
 }
 
 export interface ScrapedSource {

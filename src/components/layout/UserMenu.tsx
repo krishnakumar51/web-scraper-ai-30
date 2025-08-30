@@ -59,7 +59,7 @@ export const UserMenu: React.FC = () => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer text-scraper-text-primary hover:bg-scraper-bg-card-hover focus:bg-scraper-bg-card-hover transition-colors" asChild>
-          <Link to="/settings" state={{ section: 'profile' }}>
+          <Link to="/settings#profile">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>

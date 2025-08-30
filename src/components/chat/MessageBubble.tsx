@@ -5,6 +5,7 @@ import SourcesList from './SourcesList';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { MessageTimestamp } from '@/components/ui/enhanced-features';
+import ImageDisplay from './ImageDisplay';
 
 interface MessageBubbleProps {
   message: Message;
@@ -63,6 +64,10 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
                   </p>
                 ))}
               </div>
+              {/* Image Display */}
+              {message.image && (
+                <ImageDisplay image={message.image} isCondensed={true} />
+              )}
             </div>
           </div>
 

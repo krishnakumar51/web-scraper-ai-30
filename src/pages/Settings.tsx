@@ -22,6 +22,8 @@ const Settings = () => {
       window.history.replaceState({}, document.title);
     } else if (location.hash === '#upgrade') {
       setActiveSection('upgrade');
+    } else if (location.hash === '#profile') {
+      setActiveSection('profile');
     }
   }, [location.state, location.hash]);
 

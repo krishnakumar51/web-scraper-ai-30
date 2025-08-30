@@ -105,13 +105,8 @@ const ChatInterface = ({ onSourcesUpdate, onChatStart }: ChatInterfaceProps) => 
       content: message,
       role: 'user',
       timestamp: new Date().toISOString(),
+      image: image,
     };
-
-    // If image is provided, add it to the message (this would be extended based on your Message type)
-    if (image) {
-      console.log('Image uploaded:', image.name);
-      // You might want to add image handling to your Message type
-    }
 
     setMessages((prev) => [...prev, newMessage]);
 
