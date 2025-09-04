@@ -1,4 +1,4 @@
-# WebScraper AI 🤖
+# WebScraper AI  🤖
 
 **An intelligent web scraping assistant powered by Google's Gemini AI**
 
